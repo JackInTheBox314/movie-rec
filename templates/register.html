@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block head %}    
 <link href="/stylesheets/authentication.css" rel="stylesheet">
@@ -11,15 +11,15 @@
     {% if message %}
         <div class="error">{{ message }}</div>
     {% endif %}
-        <p><b>Log In</b></p>
-    <form method="POST" action="login">
+        <p><b>Create an Account</b></p>
+    <form method="POST" action="register">
         <input type="text" placeholder="username" name="username" class="field">
         <input type="password" placeholder="password" name="password" class="field">
-        <input type="submit" value="log in" class="btn">
+        <input type="submit" value="create" class="btn">
     </form>
+
     <nav>
-        <a class="registerButton" href="/register">Create an Account</a>
+        <a class="loginButton" href="/login">Log in to existing account</a>
     </nav>
-</div>
 
 {% endblock %}

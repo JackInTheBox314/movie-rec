@@ -11,8 +11,9 @@
     <div class="bg"></div>
     <div class="bg-overlay"></div>
     <header class="header-container">
+        {% with user = current_user %}
         <div class="form-container">
-            {% if user %}
+            {% if user is mapping %}
             <div class="login-label">Logged in as: <i>{{ user.username }}</i></div>
             <form method="POST" action="logout">
                 <label class="logoutLblPos">
@@ -21,22 +22,13 @@
             </form>
             {% endif %}
         </div>
+        {% endwith %}
         <div class="title-container">
-            <h1>Netflix Tracker</h1>
+            <h1>Movie Recommender</h1>
         </div>
     </header>
 
     {% block content %}{% endblock %}
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li style="color:white">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
 
 </body>
 </html>

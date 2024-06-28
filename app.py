@@ -14,6 +14,8 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from bson import ObjectId
+
 
 
 
@@ -128,7 +130,8 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(uid):
-    return users_collection.find_one({"_id": uid}) 
+    user = users_collection.find_one({"_id": ObjectId(uid)}) 
+    return user
 
 bcrypt = Bcrypt(app)
 

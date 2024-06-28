@@ -11,12 +11,21 @@
     {% if message %}
         <div class="error">{{ message }}</div>
     {% endif %}
-        <p><b>Log In</b></p>
+        <p class="auth-label"><b>Log In</b></p>
     <form method="POST" action="login">
         <input type="text" placeholder="username" name="username" class="field">
         <input type="password" placeholder="password" name="password" class="field">
         <input type="submit" value="log in" class="btn">
     </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="messages">
+            {% for category, message in messages %}
+            <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
     <nav>
         <a class="registerButton" href="/register">Create an Account</a>
     </nav>

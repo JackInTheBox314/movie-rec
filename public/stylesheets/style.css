@@ -9,6 +9,11 @@ html, body {
     font-family: 'Arial';
 }  
 
+h1 {
+    font-size: 1em;
+    margin-bottom: 0.4em;
+}
+
 .bg {
     position: fixed;
     /* background-image: linear-gradient(to bottom, #110202, #210404, #320606); */
@@ -37,19 +42,20 @@ html, body {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: rgba(25, 25, 25, 0.8);
     position: fixed;
     top: 10%;
-    left: 10%;
-    width: 80%;
+    left: 7%;
+    width: 86%;
 	height: 80%;
-    border: 1px solid #888;
+    border: 0px;
     z-index: 10;
     overflow-y: auto;
     border-radius: 10px;
     box-shadow: 0px 0px 100px #222;
     padding: 10px;
     display: block;
+    border: 1px solid rgba(100, 100, 100, 0.5)
 }
 
 .modal-content > div {
@@ -72,13 +78,14 @@ html, body {
 
 .close {
     position: fixed;
-    top: 12%;
-    right: 9.5%;
+    top: 11%;
+    right: 7%;
     cursor: pointer;
     padding: 6px;
     border: none;
     background: none;
     font-size: 20px;
+    color: white;
 }
 
 .close:hover{
@@ -95,36 +102,48 @@ html, body {
 
 .show-box {
     cursor: pointer;
-    border: 1px solid #eee;
     border-radius: 10px;
-    box-shadow: 0px 0px 5px #aaa;
     padding: 10px;
     margin: 10px;
-    height: 250px;
-    width: 175px;
+    height: 408px;
+    width: 270px;
     transition: all 0.3s ease-in-out;
     overflow: hidden;
-    background-color: white;
+    background: transparent;
+    border: 1px solid rgb(0, 0, 0, 0);
+
 }
 
 .show-box:hover {
-    overflow-y: auto !important;
-    box-shadow: 0px 0px 10px #666;
-    margin: -10px;
-    height: 290px;
-    width: 215px;
+    width: 550px;
     z-index: 10;
-    transition-delay: 0.3s;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px #aaa;
+}
+
+.error {
+    color: red;
+}
+
+img {
+    float: left;
+    margin-right: 10px;
 }
 
 .show-box > h2 {
     margin: 6px;
-    pointer-events: none
+    pointer-events: none;
+    color: #ddd;
 }
 
 .show-box > p{
     margin: 3px;
     pointer-events: none;
+    color: #bbb;
+}
+
+.show-box b{
+    color: #ddd;
 }
 
 .container {
@@ -234,6 +253,8 @@ form .logout:active {
     border: 2px solid transparent;
     transition: border .2s, background-color .2s;
     margin-right: 5px;
+    width: auto;
+    display: inline-block;
 }
 
 #btn-show-modal:hover,
@@ -252,6 +273,7 @@ form .logout:active {
     border: 2px solid transparent;
     transition: border .2s, background-color .2s;
     text-decoration: none;
+    display: inline-block;
 }
 
 #btn-gen-rec:hover,
@@ -288,6 +310,11 @@ main {
 
 #title {
     cursor: pointer;
+    transition: text-shadow .1s;
+}
+
+#title:hover {
+    text-shadow: 0 0 10px rgb(0, 255, 255);
 }
 
 .close-info {
@@ -350,4 +377,11 @@ main {
 @font-face {
     font-family: 'Bebas Neue Light';
     src: url('../fonts/BebasNeue-Light.ttf') format('truetype');
+}
+
+select {
+    border: 0px solid #fff;
+    background-color: transparent;
+    color: #ddd;
+    font-size: 16px;
 }

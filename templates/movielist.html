@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Show List{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <main>
+        <input type="submit" id="btn-show-modal" value="Browse Shows and Movies">	
+        <a href="/rec-list" onclick="handleGenRec()" id="btn-gen-rec">Generate Recommendations</a>
+    </main>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Date Added</th>
+            <th>Rating</th>
+        </tr>
+    {% for movie in movies|reverse %}
+        <tr>
+            <td><span id='title' onclick="handleShowClick(movie)">{{ movie['title'] }}</span></td>
+            <td>{{ movie['date_added'] }}</td>
+            <td> 
+                <select title="{{ movie['title'] }}" class="rating-select">
+                    <option value=""></option>
+                    <option value="1" {% if movie['rating']==1 %} selected="selected" {% endif %}>1 star</option>
+                    <option value="2" {% if movie['rating']==2 %} selected="selected" {% endif %}>2 stars</option>
+                    <option value="3" {% if movie['rating']==3 %} selected="selected" {% endif %}>3 stars</option>
+                    <option value="4" {% if movie['rating']==4 %} selected="selected" {% endif %}>4 stars</option>
+                    <option value="5" {% if movie['rating']==5 %} selected="selected" {% endif %}>5 stars</option>
+                </select>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+
+
+    <dialog id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close" type="button">&#x2715;</button>
+            <div class="filters">
+                <div class="searchFilter">
+                    <label style="color: white" for="searchValues">Search: </label> 
+                    <input style="color: white;background: transparent;border: 1px solid rgba(150, 150, 150, 0.5);border-radius: 5px;font-size: 16px;" type="text" name="searchValue" id="search"> 
+                </div> 
+                <div class="sortFilter">
+                    <label style="color: white" for="shows">Sort By:</label>
+                    <select name="sort" id="sort">
+                        <option selected='selected' value="rating">Rating</option>
+                        <option value="most_rated">Number of Ratings</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="longest">Longest</option>
+                        <option value="shortest">Shortest</option>
+                        <option value="alphabetical">Alphabetical</option>
+                    </select>
+                </div>
+            </div>
+            <div style="color: red;" class="error"></div>
+            <div class="show-container"></div>
+        </div>
+    </dialog>
+
+    <dialog id="modal-info" class="modal-info">
+        <div class="info-container">
+            <button class="close-info" type="button">&#x2715;</button>
+            <div class="info-content"></div>
+        </div>
+    </dialog>
+
+    <script defer src="javascripts/index.js"></script>
+{% endblock %}

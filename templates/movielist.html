@@ -5,17 +5,18 @@
 <div class="table-container">
     <main>
         <input type="submit" id="btn-show-modal" value="Browse Shows and Movies">	
-        <a href="/rec-list" onclick="handleGenRec()" id="btn-gen-rec">Generate Recommendations</a>
+        <a href="/reclist" id="btn-gen-rec">Generate Recommendations</a>
     </main>
     <table>
         <tr>
-            <th>Title</th>
-            <th>Date Added</th>
-            <th>Rating</th>
+            <th style="width:65%">Title</th>
+            <th style="width:15%">Date Added</th>
+            <th style="width:10%">Rating</th>
+            <th style="width:10%"></th>
         </tr>
     {% for movie in movies|reverse %}
-        <tr>
-            <td><span id='title' onclick="handleShowClick(movie)">{{ movie['title'] }}</span></td>
+        <tr class='title'>
+            <td id='title' onclick="handleShowClick('{{ movie['title'] }}')"><span>{{ movie['title'] }}</span></td>
             <td>{{ movie['date_added'] }}</td>
             <td> 
                 <select title="{{ movie['title'] }}" class="rating-select">
@@ -27,6 +28,7 @@
                     <option value="5" {% if movie['rating']==5 %} selected="selected" {% endif %}>5 stars</option>
                 </select>
             </td>
+            <td id='remove'><button onclick="removeMovie('{{ movie['title'] }}')" class="remove" type="button">Remove</button></td>
         </tr>
     {% endfor %}
     </table>
@@ -38,14 +40,14 @@
             <button class="close" type="button">&#x2715;</button>
             <div class="filters">
                 <div class="searchFilter">
-                    <label style="color: white" for="searchValues">Search: </label> 
+                    <label style="color: white">Search: </label> 
                     <input style="color: white;background: transparent;border: 1px solid rgba(150, 150, 150, 0.5);border-radius: 5px;font-size: 16px;" type="text" name="searchValue" id="search"> 
                 </div> 
                 <div class="sortFilter">
-                    <label style="color: white" for="shows">Sort By:</label>
+                    <label style="color: white">Sort By:</label>
                     <select name="sort" id="sort">
-                        <option selected='selected' value="rating">Rating</option>
-                        <option value="most_rated">Number of Ratings</option>
+                        <option selected='selected' value="most_rated">Number of Ratings</option>
+                        <option value="rating">Rating</option>
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>
                         <option value="longest">Longest</option>

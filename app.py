@@ -15,6 +15,9 @@ from pymongo.server_api import ServerApi
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 
@@ -134,22 +137,31 @@ def load_user(uid):
     return user
 
 bcrypt = Bcrypt(app)
+    
+df = pd.read_csv('movies.csv')
+# nlp = spacy.load("en_core_web_md") 
+
+# nlp.vocab['not'].is_stop = False
+
+# def preprocess(text):
+#     doc = nlp(text)
+#     no_stop_words = [token.text for token in doc if not token.is_stop]
+#     return " ".join(no_stop_words) 
+
+# df['preprocessed_description'] = df['description'].map(preprocess)
+
+# df.to_csv('movies.csv', index=False)
+
+tfidf = TfidfVectorizer()
+matrix = tfidf.fit_transform(df['preprocessed_description'])
+
+all_feature_names = tfidf.get_feature_names_out()
+    
+cos_sim = cosine_similarity(matrix)
 
 from routes import register_routes
-register_routes(app, db, bcrypt)
+register_routes(app, db, bcrypt, cos_sim)
 
-
-# @app.route('/')
-# def index():
-#     return redirect(url_for('login'))
-
-# @app.route('/login')
-# def login():
-#     return render_template('login.html')
-
-# @app.route('/register')
-# def register():
-#     return render_template('register.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=os.getenv('PORT'), debug=False)

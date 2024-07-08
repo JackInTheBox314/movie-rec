@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Show List{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <main>
+        <a href="/movielist" id="btn-back">Back</a>
+    </main>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Similarity Score</th>
+            <th>Most Similar To</th>
+        </tr>
+    {% for rec in recs %}
+        <tr>
+            <td><span onclick="handleShowClick(this)" id='title'>{{ rec['title'] }}</span></td>
+            <td>{{ rec['similarity_score'] }}</td>
+            <td>{{ rec['similar_to'] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+
+<dialog id="modal-info" class="modal-info">
+    <div class="info-container">
+        <button class="close-info" type="button">&#x2715;</button>
+        <div class="info-content"></div>
+    </div>
+</dialog>
+
+<script defer src="javascripts/index.js"></script>
+{% endblock %}

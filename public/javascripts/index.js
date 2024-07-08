@@ -3,24 +3,22 @@ document.addEventListener('DOMContentLoaded', main)
 async function main() {
     console.log('hello world');
 
-    const showInfo = document.querySelector('.info-content')
-    const showInfoContainer = document.querySelector('.modal-info')
+    const movie_info = document.querySelector('.info-content')
+    const movie_info_container = document.querySelector('.modal-info')
     const closeInfoBtn = document.querySelector('.close-info')
     closeInfoBtn.addEventListener('click', function(){
-        showInfo.replaceChildren()
-        showInfoContainer.style.display = 'none';
+        movie_info.replaceChildren()
+        movie_info_container.style.display = 'none';
     })
-
     const addShowBtn = document.querySelector('#btn-show-modal');
     const modalDiv = document.querySelector('#modal');
     const showContainer = document.querySelector('.show-container')
     const closeModalBtn = document.querySelector('.close');
     const sortSelect = document.querySelector('#sort');
     const searchFilter = document.querySelector('#search');
+
     const ratingSelects = document.querySelectorAll('.rating-select')
-
     console.log(ratingSelects)
-
     for (const ratingSelect of ratingSelects) {
         console.log('test')
         ratingSelect.addEventListener('change', async function(evt){
@@ -41,6 +39,20 @@ async function main() {
             // console.log(JSON.stringify({rating: rating, showId: showId}));
 
             await fetch('rating_add', options)
+        })
+    }
+
+    const titleRows = document.querySelectorAll('.title')
+    console.log(titleRows)
+    for (const titleRow of titleRows){
+        console.log(titleRow)
+        titleRow.addEventListener('mouseover', function() {
+            const delete_button = titleRow.lastElementChild.lastElementChild
+            delete_button.style.display = 'block';
+        })
+        titleRow.addEventListener('mouseout', function() {
+            const delete_button = titleRow.lastElementChild.lastElementChild
+            delete_button.style.display = 'none';
         })
     }
 
@@ -89,7 +101,7 @@ async function main() {
 
     const showsDataKeys = Object.keys(showsData[0]);
 
-    // sortBy('recentlyAdded');
+    sortBy('most_rated');
     displayShows(true);
 
     async function displayShows(first) {
@@ -147,7 +159,7 @@ async function main() {
         } else {
             minutes = time.slice(0, -1)
         }
-        return 60 * hours + minutes
+        return 60 * parseInt(hours) + parseInt(minutes)
     }
 
     function createShowDiv(show) {
@@ -209,7 +221,7 @@ async function main() {
             }
             // console.log(JSON.stringify({title: title}));
 
-            const res = await fetch('show_add', options)
+            const res = await fetch('movie_add', options)
             const result = await res.json()
 
             console.log(result.error)
@@ -227,56 +239,82 @@ async function main() {
     }
 }
 
-// async function handleShowClick(movie){
+async function handleShowClick(movie){
 
-//     console.log('hello')
-//     console.log(movie.textContent)
-//     const titleSelect = movie.textContent
+    console.log('hello')
+    console.log(movie)
+    const titleSelect = movie
 
-//     const response = await fetch('showsData')
-//     if (!response.ok){
-//         throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     const showsData = await response.json()
-//     console.log(showsData)
+    const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({title: titleSelect})
+    }
+    // console.log(JSON.stringify({title: title}));
 
-//     let curShow = null
-//     for (let i = 0; i < showsData.length; i++){
-//         console.log(showsData[i])
-//         if (showsData[i].title == titleSelect){
-//             curShow = showsData[i]
-//             console.log(curShow)
-//             break
-//         }
-//     }
+    const res = await fetch('get_movie_info', options)
+    const result = await res.json()
+    const movie_data = result.movie
+    console.log(movie_data)
 
-//     const showInfo = document.querySelector('.info-content')
-//     const showInfoContainer = document.querySelector('.modal-info')
+    const movie_info = document.querySelector('.info-content');
+    const movie_info_container = document.querySelector('.modal-info')
 
-//     const titleInfo = document.createElement('h2');
-//     titleInfo.textContent = curShow.title;
+    const posterElement = document.createElement('img');
+    posterElement.src = movie_data.poster_url
+    posterElement.title = movie_data.title
+    posterElement.onerror = "this.onerror=null; this.remove();"
 
-//     const directorInfo = document.createElement('p');
-//     directorInfo.innerHTML = "<b>Director</b>: " + curShow.director;
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = movie_data.title;
 
-//     const castInfo = document.createElement('p');
-//     castInfo.innerHTML = '<b>Cast</b>: ' + curShow.cast;
+    const yearElement = document.createElement('p');
+    yearElement.innerHTML = "<b>Release Year</b>: " + movie_data.year;
 
-//     const categoryInfo = document.createElement('p');
-//     categoryInfo.innerHTML = '<b>Categories</b>: ' + curShow.listed_in;
+    const durationElement = document.createElement('p');
+    durationElement.innerHTML = '<b>Duration</b>: ' + movie_data.duration;
 
-//     const dateInfo = document.createElement('p');
-//     dateInfo.innerHTML = '<b>Added</b>: ' + curShow.date_added;
+    const age_ratingElement = document.createElement('p');
+    age_ratingElement.innerHTML = '<b>Age Rating</b>: ' + movie_data.age_rating;
 
-//     const descriptionInfo = document.createElement('p');
-//     descriptionInfo.innerHTML = '<b>Description</b>: ' + curShow.description;
+    const star_ratingElement = document.createElement('p');
+    star_ratingElement.innerHTML = '<b>User Rating</b>: ' + movie_data.star_rating + ' (' + movie_data.num_ratings + ')';
 
-//     showInfo.appendChild(titleInfo);
-//     showInfo.appendChild(directorInfo);
-//     showInfo.appendChild(castInfo);
-//     showInfo.appendChild(categoryInfo);
-//     showInfo.appendChild(dateInfo);
-//     showInfo.appendChild(descriptionInfo);
+    const descriptionElement = document.createElement('p');
+    descriptionElement.innerHTML = '<b>Description</b>: ' + movie_data.description;
 
-//     showInfoContainer.style.display='block'
-// }
+    movie_info.appendChild(posterElement);
+    movie_info.appendChild(titleElement);
+    movie_info.appendChild(yearElement);
+    movie_info.appendChild(durationElement);
+    movie_info.appendChild(age_ratingElement);
+    movie_info.appendChild(star_ratingElement);
+    movie_info.appendChild(descriptionElement);
+
+    movie_info_container.style.display='block'
+}
+
+
+async function removeMovie(movie) {
+    console.log('hello')
+    console.log(movie)
+    const titleSelect = movie
+
+    const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({title: titleSelect})
+    }
+    // console.log(JSON.stringify({title: title}));
+
+    const res = await fetch('remove_movie', options)
+    const result = await res.json()
+    const ok = result.ok
+    if (ok) {
+        window.location.reload();
+    }
+}
